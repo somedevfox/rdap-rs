@@ -53,7 +53,7 @@ impl Registry {
 
 #[cfg(test)]
 mod tests {
-    use crate::sync::{Endpoints, Registry};
+    use crate::{sync::{Endpoints, Registry}, IpVersion};
     #[test]
     fn ripe() {
         let registry = Registry::connect(
@@ -63,7 +63,12 @@ mod tests {
                 autnum: String::from("/autnum"),
             },
         );
-        registry.query_domain("193.0.6.139.in-addr.arpa");
-        assert!(false);
+        let domain = registry.query_domain("193.0.6.139.in-addr.arpa").unwrap();
+        assert_eq!(domain.rir_domain, String::from("whois.ripe.net"));
+        assert_eq!(domain.name, String::from("6.139.in-addr.arpa"));
+        assert_eq!(domain.country.code, String::from("DE"));
+        assert_eq!(domain.country.name, String::from("Germany"));
+        assert_eq!(domain.network.name, String::from("IWZ-LAN"));
+        assert_eq!(domain.network.ip_version, IpVersion::V4);
     }
 }

@@ -1,5 +1,6 @@
 use std::io;
 
+#[derive(Debug)]
 pub enum Error {
     Request(ureq::Error),
     Io(io::Error),

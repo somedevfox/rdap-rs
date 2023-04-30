@@ -69,7 +69,7 @@ pub struct PublicID {
     pub identifier: String
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, PartialOrd, Ord)]
 #[serde(rename_all = "lowercase")]
 pub enum IpVersion {
     V4,

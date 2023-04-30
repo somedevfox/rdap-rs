@@ -41,7 +41,8 @@ pub struct Domain {
     pub network: Network,
     pub nameservers: Vec<String>,
     pub events: Vec<Event>,
-    pub entities: Vec<Entity>
+    pub entities: Vec<Entity>,
+    pub rir_domain: String
 }
 impl From<model::RegistryRecord> for Domain {
     fn from(registry_record: model::RegistryRecord) -> Self {
@@ -64,7 +65,8 @@ impl From<model::RegistryRecord> for Domain {
                 .map(|ns| ns.ldh_name)
                 .collect(),
             events: registry_record.events,
-            entities: registry_record.entities
+            entities: registry_record.entities,
+            rir_domain: registry_record.port43.unwrap()
         }
     }
 }
