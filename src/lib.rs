@@ -1,5 +1,6 @@
 pub mod model;
 pub mod sync;
+pub mod result;
 
 use std::net::IpAddr;
 use std::str::FromStr;

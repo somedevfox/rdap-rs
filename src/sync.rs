@@ -1,6 +1,7 @@
 use crate::{
     model::{self, ObjectClassType},
-    Country, Domain,
+    result::{Result, Error},
+    Domain,
 };
 
 pub struct Endpoints {
@@ -30,7 +31,7 @@ impl Registry {
         )
     }
 
-    pub fn query_domain(&self, domain_name: impl ToString) {
+    pub fn query_domain(&self, domain_name: impl ToString) -> Result<Domain> {
         let registry_record = ureq::get(
             format!(
                 "https://{}{}/{}",
@@ -40,16 +41,12 @@ impl Registry {
             )
             .as_str(),
         )
-        .call()
-        .unwrap()
-        .into_json::<model::RegistryRecord>()
-        .unwrap();
+        .call()?
+        .into_json::<model::RegistryRecord>()?;
         if registry_record.record_type == ObjectClassType::Domain {
-            
-            println!(
-                "{:?}",
-                Domain::from(registry_record)
-            );
+            Ok(Domain::from(registry_record))
+        } else {
+            Err(Error::NotDomain)
         }
     }
 }
