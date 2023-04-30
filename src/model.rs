@@ -41,7 +41,7 @@ pub struct Event {
 /// Object Classes denote how should a response be parsed.
 /// 
 /// Specification for the object classes: [Section 5](https://datatracker.ietf.org/doc/html/rfc7483#section-5)
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, PartialOrd, Ord)]
 #[serde(rename_all = "snake_case")]
 pub enum ObjectClassType {
     Domain,
@@ -79,15 +79,15 @@ pub enum IpVersion {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Entity {
     #[serde(rename = "objectClassType")]
-    pub entity_type: ObjectClassType,
+    pub entity_type: Option<ObjectClassType>,
     pub handle: String,
     #[serde(rename = "vcardArray")]
-    pub vcard_array: Vec<JsonValue>,
+    pub vcard_array: Option<Vec<JsonValue>>,
     pub roles: Vec<String>,
-    pub links: Links,
-    pub events: Events,
-    pub status: Vec<String>,
-    pub port43: String,
+    pub links: Option<Links>,
+    pub events: Option<Events>,
+    pub status: Option<Vec<String>>,
+    pub port43: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -136,7 +136,9 @@ pub struct RegistryRecord {
     pub parent_handle: Option<String>,
     pub remarks: Vec<Notice>,
     pub events: Events,
+    pub country: Option<String>,
     #[serde(rename = "publicIds")]
     pub public_ids: Option<PublicIDs>,
+    pub entities: Vec<Entity>,
     pub port43: Option<String>,
 }
